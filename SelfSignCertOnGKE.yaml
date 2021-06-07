@@ -55,7 +55,7 @@ spec:
               port:
                 number: 9090
 
----		
+---
 ## Deployment ###
 
 apiVersion: apps/v1
@@ -79,7 +79,7 @@ spec:
         image: pranavdhopey/myweb:httpdv3
         ports:
         - containerPort: 80
-	
+
 ---
 ### Deploy Service ###
 
