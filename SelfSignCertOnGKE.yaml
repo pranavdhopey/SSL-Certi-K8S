@@ -1,0 +1,100 @@
+## Ref Link: https://linuxize.com/post/creating-a-self-signed-ssl-certificate/ ##
+
+## Deploy Certificate Issuer ##
+
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigned-issuer
+  namespace: self-signed
+spec:
+#  selfSigned: {}
+  ca:
+    secretName: ca-key-pair
+
+---
+## Generate Self Signed Certificate ##
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-cert
+  namespace: self-signed
+spec:
+  commonName: example.local
+  dnsNames: 
+    - apache.example.local
+  secretName: selfsigned-cert-tls
+  issuerRef:
+    name: selfsigned-issuer
+
+---	
+## Deploy Ingress ##
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress-tls
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: my-static-ip
+    kubernetes.io/ingress.allow-http: "true"
+spec:
+  tls:
+  - hosts:
+    - apache.example.local
+    secretName: selfsigned-cert-tls
+  rules:
+  - host: apache.example.local
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: myapp1-service
+              port:
+                number: 9090
+
+---				
+## Deployment ###
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp1-deployment
+  labels:
+    app: myapp1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp1
+  template:
+    metadata:
+      labels:
+        app: myapp1
+    spec:
+      containers:
+      - name: myapp1
+        image: pranavdhopey/myweb:httpdv3
+        ports:
+        - containerPort: 80
+		
+---		
+### Deploy Service ###
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp1-service
+spec:
+  selector:
+    app: myapp1
+  ports:
+  - protocol: TCP
+    port: 9090
+    targetPort: 80
+#  type: NodePort				
+				
+
+	
