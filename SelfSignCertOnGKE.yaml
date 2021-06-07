@@ -1,4 +1,19 @@
 ## Ref Link: https://linuxize.com/post/creating-a-self-signed-ssl-certificate/ ##
+
+## Create Self signed certificate and secret key ##
+#openssl req -newkey rsa:4096 \
+#            -x509 \
+#            -sha256 \
+#            -days 365 \
+#            -nodes \
+#            -out example.crt \
+#            -keyout example.key \
+#            -subj "/C=IN/ST=MH/L=Mumbai/O=example-org/OU=IT Department/CN=www.example.local"
+
+
+## Create secret using above certificate and key file ##
+#kubectl create secret tls ca-key-pair --cert=example.crt --key=example.key -n self-signed
+
 ---
 ## Deploy Certificate Issuer ##
 
