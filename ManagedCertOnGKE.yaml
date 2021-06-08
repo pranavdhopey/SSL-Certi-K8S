@@ -6,7 +6,7 @@ metadata:
   name: gcp-cert
 spec:
   domains:
-    - apache.example.local
+    - apache.goinit.net
 
 ---
 ## Deploy Ingress ##
@@ -21,7 +21,7 @@ metadata:
     networking.gke.io/managed-certificates: gcp-cert
 spec:
   rules:
-  - host: apache.example.local
+  - host: apache.goinit.net
     http:
       paths:
         - path: /
