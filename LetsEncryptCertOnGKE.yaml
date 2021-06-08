@@ -30,8 +30,7 @@ spec:
   commonName: website.local
   dnsNames:
   - apache.website.local
-  - nginx.website.local
-  
+
 ---
 ## Deploy Ingress ##
 
