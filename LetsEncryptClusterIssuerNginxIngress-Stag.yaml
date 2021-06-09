@@ -20,6 +20,21 @@ spec:
          class: nginx 
 
 ---
+## Deploy LetsEncrypt Certificate ##
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: letsencrypt-staging-cert
+spec:
+  secretName: letsencrypt-staging-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-staging-issuer
+  dnsNames:
+  - web1.goinit.net
+
+---
 ## Ingress ###
 apiVersion: networking.k8s.io/v1
 kind: Ingress
