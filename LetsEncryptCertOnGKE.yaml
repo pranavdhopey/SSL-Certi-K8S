@@ -1,15 +1,16 @@
+---
 ## Deploy Issuer ##
 
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt-staging-issuer
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     email: pranav.dhope@gmail.com    
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt-staging-key
     solvers:
     - http01: 
        ingress:
@@ -26,10 +27,9 @@ spec:
   secretName: letsencrypt-staging-tls
   issuerRef:
     kind: Issuer
-    name: letsencrypt-staging
-  commonName: website.local
+    name: letsencrypt-staging-issuer
   dnsNames:
-  - apache.website.local
+  - web1.goinit.net
 
 ---
 ## Deploy Ingress ##
@@ -39,17 +39,17 @@ kind: Ingress
 metadata:
   name: myapp-ingress-tls
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: my-static-ip2
+    kubernetes.io/ingress.global-static-ip-name: my-static-ip
     kubernetes.io/ingress.allow-http: "true"
     cert-manager.io/acme-challenge-type: http01
+    cert-manager.io/issuer: "letsencrypt-staging-issuer"
 spec:
   tls:
   - hosts:
-    - apache.website.local
-    - nginx.website.local
+    - web1.goinit.net
     secretName: letsencrypt-staging-tls
   rules:
-  - host: apache.website.local
+  - host: web1.goinit.net
     http:
       paths:
         - path: /
