@@ -19,7 +19,7 @@ metadata:
   labels:
     app: web
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: web
@@ -80,13 +80,13 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: web
 spec:
-  maxReplicas: 10
+  maxReplicas: 3
   minReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: web
-  targetCPUUtilizationPercentage: 50
+  targetCPUUtilizationPercentage: 60
 
 ---
 ## HTTP to HTTPS redirects ##
