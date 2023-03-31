@@ -3,7 +3,7 @@ SSL Certificate Creation Guide on K8S
 
 Go to Below Link of cert-manager and apply certmanger manifest to deploy cert manager.
 
- https://cert-manager.io/docs/installation/kubernetes/
+ [https://cert-manager.io/docs/installation/kubernetes/](https://cert-manager.io/docs/installation/kubectl/)
 
 
 ```
